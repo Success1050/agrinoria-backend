@@ -23,7 +23,7 @@ EMAIL_SECURE=false
 EMAIL_USER="tomzyofficial54@gmail.com"
 EMAIL_PASS="ebeo ndjn edru ovuf"
 EMAIL_FROM_NAME="Agri-Noria"
-FRONTEND_URL="http://localhost:3000"
+FRONTEND_APP_URL="http://localhost:3000"
 
 TEMP_TOKEN=007eJxTYJif9bG76GV14A9T0c7oPneN/OK9F0S+M0tuzPrYPGHX2dUKDGYpyWaGlqmJqcYmSSaJpqYWhuYWaWYpxqZpyZbJSanGiu9YshoCGRn6OayZGBkgEMRnYShJLS5hYAAAl9Ef4w==
 

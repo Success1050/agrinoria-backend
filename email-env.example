@@ -27,4 +27,4 @@ EMAIL_FROM_NAME=Agri-Connect
 EMAIL_TEST_ADDRESS=your-test-email@gmail.com
 
 # Frontend URL (for email links)
-FRONTEND_URL=http://localhost:3000
+FRONTEND_APP_URL=http://localhost:3000

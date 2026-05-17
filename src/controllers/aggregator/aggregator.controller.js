@@ -94,8 +94,8 @@ export const aggregatorController = {
             data: {
                agreement_id: agreement.id,
                pdf_url: pdfUrl,
-               acceptance_link: `${process.env.FRONTEND_URL}/review-agreement/${secure_token}`,
-               payment_link: `${process.env.FRONTEND_URL}/payment-link/${payment_token}`,
+               acceptance_link: `${process.env.FRONTEND_APP_URL}/review-agreement/${secure_token}`,
+               payment_link: `${process.env.FRONTEND_APP_URL}/payment-link/${payment_token}`,
             },
          });
       } catch (error) {
@@ -158,7 +158,7 @@ export const aggregatorController = {
                   aggregator_id: agreement.aggregator_id,
                   category: "aggregator_escrow",
                },
-               callback_url: `${process.env.FRONTEND_URL}/payment-success?agreement_id=${agreement.id}`,
+               callback_url: `${process.env.FRONTEND_APP_URL}/payment-success?agreement_id=${agreement.id}`,
             },
             {
                headers: {
@@ -389,28 +389,28 @@ async function generateAgreementPDF(agreement, buyer, aggregator) {
       doc.text("QUANTITY", 200, startY, { bold: true });
       doc.text("UNIT PRICE", 350, startY, { bold: true });
       doc.text("TOTAL VALUE", 450, startY, { bold: true });
-      
+
       doc.moveTo(50, startY + 15).lineTo(550, startY + 15).stroke();
       doc.moveDown(1);
-      
+
       doc.text(agreement.product_details.commodity, 50, doc.y);
       doc.text(`${agreement.product_details.quantity}`, 200, doc.y - 10);
       doc.text(`N${parseFloat(agreement.product_details.price).toLocaleString()}`, 350, doc.y - 10);
       doc.fillColor(greenTheme).text(`N${parseFloat(agreement.financing_amount).toLocaleString()}`, 450, doc.y - 10);
-      
+
       doc.moveDown(3);
 
       // Section: Terms
       doc.fillColor(darkTheme).fontSize(12).text("Terms & Conditions", { underline: true });
       doc.moveDown(1);
       doc.fontSize(9).text(agreement.terms_and_conditions || "This agreement is subject to the standard platform fulfillment and quality control guidelines. Payments are held in secure escrow until delivery verification.", { width: 500, align: "justify" });
-      
+
       // Signatures
       doc.moveDown(5);
       const sigY = doc.y;
       doc.moveTo(50, sigY).lineTo(200, sigY).stroke();
       doc.text("Aggregator Signature", 50, sigY + 5);
-      
+
       doc.moveTo(350, sigY).lineTo(500, sigY).stroke();
       doc.text("Buyer Signature & Stamp", 350, sigY + 5);
 

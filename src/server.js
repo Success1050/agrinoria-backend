@@ -31,7 +31,11 @@ const port = process.env.PORT || 8080;
 const app = express()
    .use(
       cors({
-         origin: ["http://localhost:3000", "https://green-oria-agri-connect-frontend.vercel.app"],
+         origin: [
+            "http://localhost:3000",
+            "https://agrinoria-frontend.vercel.app",
+            process.env.FRONTEND_APP_URL
+         ].filter(Boolean),
          credentials: true,
          methods: ["GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"],
          allowedHeaders: ["Content-Type", "Authorization"],

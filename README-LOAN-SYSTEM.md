@@ -202,7 +202,7 @@ PAYSTACK_SECRET_KEY=sk_test_...
 PAYSTACK_CALLBACK_URL=https://yourdomain.com/payment-success
 
 # Frontend URL
-FRONTEND_URL=https://yourdomain.com
+FRONTEND_APP_URL=https://yourdomain.com
 
 # Database
 DATABASE_URL=postgresql://...

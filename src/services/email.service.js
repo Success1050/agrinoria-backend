@@ -205,8 +205,8 @@ class EmailService {
    generateWelcomeEmailTemplate(name, userType) {
       const userTypeName = userType ? userType : "Buyer";
       const dashboardUrl = userType
-         ? `${process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard`
-         : `${process.env.FRONTEND_URL || "http://localhost:3000"}/dashboard/buyer`;
+         ? `${process.env.FRONTEND_APP_URL || "http://localhost:3000"}/dashboard`
+         : `${process.env.FRONTEND_APP_URL || "http://localhost:3000"}/dashboard/buyer`;
 
       return `
          <!DOCTYPE html>
