@@ -301,7 +301,7 @@ CREATE TABLE IF NOT EXISTS buyer_matches (
 );
 
 -- STAGE 14: SALES & SETTLEMENT
-CREATE TABLE IF NOT EXISTS sales (
+/* CREATE TABLE IF NOT EXISTS sales (
    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
    cluster_id UUID REFERENCES clusters(id),
    buyer_match_id UUID REFERENCES buyer_matches(id),
@@ -313,7 +313,7 @@ CREATE TABLE IF NOT EXISTS sales (
    status VARCHAR(50) DEFAULT 'pending', -- pending, settled, disputed
    disbursement_date TIMESTAMP WITH TIME ZONE,
    created_at TIMESTAMP WITH TIME ZONE DEFAULT now()
-);
+); */
 
 -- STAGE 15: REPAYMENT & RECONCILIATION
 CREATE TABLE IF NOT EXISTS repayments (
@@ -340,7 +340,7 @@ CREATE INDEX IF NOT EXISTS idx_input_requests_farmer ON input_requests(farmer_id
 CREATE INDEX IF NOT EXISTS idx_planting_activities_farmer ON planting_activities(farmer_id);
 CREATE INDEX IF NOT EXISTS idx_field_verifications_farmer ON field_verifications(farmer_id);
 CREATE INDEX IF NOT EXISTS idx_harvest_approvals_farmer ON harvest_approvals(farmer_id);
-CREATE INDEX IF NOT EXISTS idx_sales_cluster ON sales(cluster_id);
+-- CREATE INDEX IF NOT EXISTS idx_sales_cluster ON sales(cluster_id);
 CREATE INDEX IF NOT EXISTS idx_repayments_farmer ON repayments(farmer_id);
 
 -- SYSTEM TABLES (Audit & Scheduling)
