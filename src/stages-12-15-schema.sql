@@ -54,6 +54,7 @@ CREATE TABLE IF NOT EXISTS buyer_contracts (
 
 -- ============ STAGE 13: SALES & SETTLEMENT ============
 
+DROP TABLE IF EXISTS sales CASCADE;
 CREATE TABLE IF NOT EXISTS sales (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     contract_id UUID NOT NULL REFERENCES buyer_contracts(id) ON DELETE CASCADE,
