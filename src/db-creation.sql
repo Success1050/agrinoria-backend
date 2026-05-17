@@ -44,6 +44,7 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+DROP TRIGGER IF EXISTS update_users_updated_at ON buyers;
 CREATE TRIGGER update_users_updated_at
 BEFORE UPDATE ON buyers
 FOR EACH ROW
@@ -114,6 +115,7 @@ CREATE TABLE IF NOT EXISTS vendor_documents (
     updated_at TIMESTAMP DEFAULT NOW()
 );
 
+DROP TRIGGER IF EXISTS trg_sync_vendor_verification ON vendor_documents;
 CREATE TRIGGER trg_sync_vendor_verification
 AFTER UPDATE OF id_front_status, id_back_status, license_status
 ON vendor_documents
