@@ -61,8 +61,8 @@ CREATE TABLE IF NOT EXISTS country_utils (
     currency character varying NOT NULL
 );
 -- not implemented yet
-CREATE INDEX idx_country_utils_vendor_id ON country_utils(vendor_id);
-CREATE INDEX idx_country_utils_user_id ON country_utils(user_id);
+CREATE INDEX IF NOT EXISTS idx_country_utils_vendor_id ON country_utils(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_country_utils_user_id ON country_utils(user_id);
 
 
 -- Trigger for automatically setting is_verified col in vendors table to true
@@ -228,18 +228,28 @@ CREATE TABLE IF NOT EXISTS reviews (
 );
 
 -- Billing cycle enum
-CREATE TYPE billing_cycle AS ENUM ('monthly', 'annually');
+DO $$
+BEGIN
+   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'billing_cycle') THEN
+      CREATE TYPE billing_cycle AS ENUM ('monthly', 'annually');
+   END IF;
+END$$;
 
 -- Subscription status enum
-CREATE TYPE subscription_status_type AS ENUM (
-    'active', 
-    'success', 
-    'complete', 
-    'not_renewing',
-    'cancelled',
-    'past_due',
-    'pending'
-);
+DO $$
+BEGIN
+   IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'subscription_status_type') THEN
+      CREATE TYPE subscription_status_type AS ENUM (
+          'active', 
+          'success', 
+          'complete', 
+          'not_renewing',
+          'cancelled',
+          'past_due',
+          'pending'
+      );
+   END IF;
+END$$;
 
 -- Subscription Plans
 CREATE TABLE IF NOT EXISTS subscription_plans (
@@ -324,12 +334,12 @@ CREATE TABLE IF NOT EXISTS transactions (
 );
 
 -- Create indexes for better performance
-CREATE INDEX idx_vendor_subscriptions_vendor_id ON vendor_subscriptions(vendor_id);
-CREATE INDEX idx_vendor_subscriptions_customer_code ON vendor_subscriptions(paystack_customer_code);
-CREATE INDEX idx_vendor_subscriptions_subscription_code ON vendor_subscriptions(paystack_subscription_code);
-CREATE INDEX idx_subscription_invoices_vendor_id ON subscription_invoices(vendor_id);
-CREATE INDEX idx_subscription_invoices_subscription_id ON subscription_invoices(subscription_id);
-CREATE INDEX idx_transactions_reference ON transactions(reference);
+CREATE INDEX IF NOT EXISTS idx_vendor_subscriptions_vendor_id ON vendor_subscriptions(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_vendor_subscriptions_customer_code ON vendor_subscriptions(paystack_customer_code);
+CREATE INDEX IF NOT EXISTS idx_vendor_subscriptions_subscription_code ON vendor_subscriptions(paystack_subscription_code);
+CREATE INDEX IF NOT EXISTS idx_subscription_invoices_vendor_id ON subscription_invoices(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_subscription_invoices_subscription_id ON subscription_invoices(subscription_id);
+CREATE INDEX IF NOT EXISTS idx_transactions_reference ON transactions(reference);
 
 
 
@@ -394,7 +404,7 @@ CREATE TABLE IF NOT EXISTS loans (
     disbursed_at TIMESTAMP,
     approved_at TIMESTAMP
 );
-CREATE INDEX vendor_loan_idx ON loans(vendor_id);
+CREATE INDEX IF NOT EXISTS vendor_loan_idx ON loans(vendor_id);
 
 -- Loan payments table
 CREATE TABLE IF NOT EXISTS loan_payments (
@@ -408,5 +418,5 @@ CREATE TABLE IF NOT EXISTS loan_payments (
 );
 
 -- not yet created this
-CREATE INDEX idx_loan_payments_loan_id ON loan_payments(loan_id);
-CREATE INDEX idx_loan_payments_reference ON loan_payments(paystack_reference); 
+CREATE INDEX IF NOT EXISTS idx_loan_payments_loan_id ON loan_payments(loan_id);
+CREATE INDEX IF NOT EXISTS idx_loan_payments_reference ON loan_payments(paystack_reference); 

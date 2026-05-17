@@ -89,23 +89,23 @@ CREATE TABLE live_chat_messages (
 );
 
 -- Indexes for performance
-CREATE INDEX idx_trainings_vendor_id ON trainings(vendor_id);
-CREATE INDEX idx_trainings_category_id ON trainings(category_id);
-CREATE INDEX idx_trainings_is_active ON trainings(is_active);
-CREATE INDEX idx_live_sessions_training_id ON live_sessions(training_id);
-CREATE INDEX idx_live_sessions_vendor_id ON live_sessions(vendor_id);
-CREATE INDEX idx_live_sessions_scheduled_start ON live_sessions(scheduled_start);
-CREATE INDEX idx_live_sessions_status ON live_sessions(status);
-CREATE INDEX idx_recorded_videos_training_id ON recorded_videos(training_id);
-CREATE INDEX idx_recorded_videos_vendor_id ON recorded_videos(vendor_id);
-CREATE INDEX idx_training_enrollments_training_id ON training_enrollments(training_id);
-CREATE INDEX idx_training_enrollments_farmer_id ON training_enrollments(farmer_id);
-CREATE INDEX idx_live_session_participants_session_id ON live_session_participants(session_id);
-CREATE INDEX idx_live_session_participants_farmer_id ON live_session_participants(farmer_id);
-CREATE INDEX idx_video_progress_video_id ON video_progress(video_id);
-CREATE INDEX idx_video_progress_farmer_id ON video_progress(farmer_id);
-CREATE INDEX idx_live_chat_messages_session_id ON live_chat_messages(session_id);
-CREATE INDEX idx_live_chat_messages_created_at ON live_chat_messages(created_at);
+CREATE INDEX IF NOT EXISTS idx_trainings_vendor_id ON trainings(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_trainings_category_id ON trainings(category_id);
+CREATE INDEX IF NOT EXISTS idx_trainings_is_active ON trainings(is_active);
+CREATE INDEX IF NOT EXISTS idx_live_sessions_training_id ON live_sessions(training_id);
+CREATE INDEX IF NOT EXISTS idx_live_sessions_vendor_id ON live_sessions(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_live_sessions_scheduled_start ON live_sessions(scheduled_start);
+CREATE INDEX IF NOT EXISTS idx_live_sessions_status ON live_sessions(status);
+CREATE INDEX IF NOT EXISTS idx_recorded_videos_training_id ON recorded_videos(training_id);
+CREATE INDEX IF NOT EXISTS idx_recorded_videos_vendor_id ON recorded_videos(vendor_id);
+CREATE INDEX IF NOT EXISTS idx_training_enrollments_training_id ON training_enrollments(training_id);
+CREATE INDEX IF NOT EXISTS idx_training_enrollments_farmer_id ON training_enrollments(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_live_session_participants_session_id ON live_session_participants(session_id);
+CREATE INDEX IF NOT EXISTS idx_live_session_participants_farmer_id ON live_session_participants(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_video_progress_video_id ON video_progress(video_id);
+CREATE INDEX IF NOT EXISTS idx_video_progress_farmer_id ON video_progress(farmer_id);
+CREATE INDEX IF NOT EXISTS idx_live_chat_messages_session_id ON live_chat_messages(session_id);
+CREATE INDEX IF NOT EXISTS idx_live_chat_messages_created_at ON live_chat_messages(created_at);
 
 -- Insert default training categories
 INSERT INTO training_categories (name, description, icon) VALUES
