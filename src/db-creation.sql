@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS vendors (
 );
 
 -- Users table (core profile)
-CREATE TABLE public.buyers (
+CREATE TABLE IF NOT EXISTS public.buyers (
     buyer_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     email TEXT UNIQUE NOT NULL,
     password_hash TEXT, -- nullable (only used for local login)
@@ -49,7 +49,7 @@ BEFORE UPDATE ON buyers
 FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TABLE country_utils (
+CREATE TABLE IF NOT EXISTS country_utils (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID REFERENCES vendors(id) ON DELETE CASCADE,
     user_id UUID REFERENCES buyers(buyer_id) ON DELETE CASCADE,
@@ -91,7 +91,7 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Vendor documents
-CREATE TABLE vendor_documents (
+CREATE TABLE IF NOT EXISTS vendor_documents (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
     -- ID Card (Front),
@@ -123,7 +123,7 @@ EXECUTE FUNCTION sync_vendor_verification();
 
 
 -- Vendor bank accounts
-CREATE TABLE vendor_bank_accounts (
+CREATE TABLE IF NOT EXISTS vendor_bank_accounts (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   vendor_id UUID NOT NULL REFERENCES vendors(id) ON DELETE CASCADE,
   bank_name TEXT NOT NULL,
@@ -133,7 +133,7 @@ CREATE TABLE vendor_bank_accounts (
 );
 
 -- Vendor stats (simple aggregated data)
-CREATE TABLE vendor_stats (
+CREATE TABLE IF NOT EXISTS vendor_stats (
   vendor_id UUID PRIMARY KEY REFERENCES vendors(id) ON DELETE CASCADE,
   total_listings INTEGER DEFAULT 0,
   total_sales NUMERIC(15,2) DEFAULT 0,
@@ -167,7 +167,7 @@ CREATE TABLE IF NOT EXISTS public.listings (
 
 
 -- Customer table
-CREATE TABLE buyer_orders (
+CREATE TABLE IF NOT EXISTS buyer_orders (
     order_id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     buyer_id UUID REFERENCES buyers(buyer_id) ON DELETE CASCADE,
     fname TEXT NOT NULL,
@@ -189,7 +189,7 @@ CREATE TABLE buyer_orders (
 );
 
 -- carts
-CREATE TABLE carts (
+CREATE TABLE IF NOT EXISTS carts (
    cart_id UUID default gen_random_uuid() PRIMARY KEY,
     buyer_id UUID REFERENCES buyers(buyer_id) on DELETE CASCADE,
     created_at TIMESTAMP DEFAULT NOW(),
@@ -197,7 +197,7 @@ CREATE TABLE carts (
 );
 
 -- Cart item
-CREATE TABLE cart_items(
+CREATE TABLE IF NOT EXISTS cart_items(
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     cart_id UUID NOT NULL REFERENCES public.carts(cart_id) ON DELETE CASCADE,
     description TEXT NOT NULL,
@@ -214,7 +214,7 @@ CREATE TABLE cart_items(
 );
 
 -- Reviews table
-CREATE TABLE reviews (
+CREATE TABLE IF NOT EXISTS reviews (
   id UUID PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
   listing_id UUID NOT NULL REFERENCES listings(id) ON DELETE CASCADE,
   buyer_id UUID NOT NULL REFERENCES buyers(buyer_id) ON DELETE CASCADE,
@@ -240,7 +240,7 @@ CREATE TYPE subscription_status_type AS ENUM (
 );
 
 -- Subscription Plans
-CREATE TABLE subscription_plans (
+CREATE TABLE IF NOT EXISTS subscription_plans (
     id uuid PRIMARY KEY DEFAULT GEN_RANDOM_UUID(),
     plan_name VARCHAR(100) NOT NULL,
     billing_cycle billing_cycle NOT NULL, -- Uses the custom ENUM type
@@ -253,7 +253,7 @@ CREATE TABLE subscription_plans (
 
 
 -- Paystack subscription events (for deferred webhook handling)
-CREATE TABLE paystack_subscription_events (
+CREATE TABLE IF NOT EXISTS paystack_subscription_events (
     customer_code TEXT PRIMARY KEY,
     subscription_code TEXT NOT NULL,
     next_payment_date TIMESTAMP,
@@ -262,7 +262,7 @@ CREATE TABLE paystack_subscription_events (
 );
 
 -- Vendor subscriptions
-CREATE TABLE vendor_subscriptions (
+CREATE TABLE IF NOT EXISTS vendor_subscriptions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID,
     plan_id UUID,
@@ -293,7 +293,7 @@ CREATE TABLE vendor_subscriptions (
 );
 
 -- Subscription invoices
-CREATE TABLE subscription_invoices (
+CREATE TABLE IF NOT EXISTS subscription_invoices (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID,
     subscription_id UUID,
@@ -310,7 +310,7 @@ CREATE TABLE subscription_invoices (
 );
 
 -- Transactions table (to track payment transactions)
-CREATE TABLE transactions (
+CREATE TABLE IF NOT EXISTS transactions (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     reference VARCHAR(100) NOT NULL UNIQUE,
     vendor_id UUID REFERENCES vendors(id) ON DELETE SET NULL,
@@ -364,7 +364,7 @@ CREATE TABLE IF NOT EXISTS storage_facility(
 );
 
 -- Loan
-CREATE TABLE loans (
+CREATE TABLE IF NOT EXISTS loans (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     vendor_id UUID NOT NULL REFERENCES vendors (id) ON DELETE CASCADE,
     org_name TEXT NOT NULL,
@@ -395,7 +395,7 @@ CREATE TABLE loans (
 CREATE INDEX vendor_loan_idx ON loans(vendor_id);
 
 -- Loan payments table
-CREATE TABLE loan_payments (
+CREATE TABLE IF NOT EXISTS loan_payments (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     loan_id UUID REFERENCES loans(id) ON DELETE CASCADE,
     amount NUMERIC(12,2) NOT NULL,

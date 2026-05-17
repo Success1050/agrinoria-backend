@@ -7,12 +7,9 @@ CREATE TABLE IF NOT EXISTS email_verifications (
     is_verified BOOLEAN DEFAULT FALSE,
     expires_at TIMESTAMP WITH TIME ZONE NOT NULL,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
+    CONSTRAINT email_verifications_email_user_type_unique UNIQUE (email, user_type)
 );
-
-ALTER TABLE email_verifications 
-ADD CONSTRAINT email_verifications_email_user_type_unique 
-UNIQUE (email, user_type);
 
 -- Indexes for performance
 CREATE INDEX IF NOT EXISTS idx_email_verifications_email ON email_verifications(email);
