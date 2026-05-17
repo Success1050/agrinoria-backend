@@ -30,6 +30,7 @@ $$;
 
 -- Trigger to automatically clean up expired codes (optional, or run as cron job)
 -- Uncomment if you want automatic cleanup
+DROP TRIGGER IF EXISTS trigger_cleanup_expired_verifications ON email_verifications;
 CREATE TRIGGER trigger_cleanup_expired_verifications
 AFTER INSERT ON email_verifications
 FOR EACH ROW
