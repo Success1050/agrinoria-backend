@@ -17,10 +17,16 @@ CREATE TABLE IF NOT EXISTS programs (
    mid_season_inspection_required BOOLEAN DEFAULT true,
    harvest_audit_required BOOLEAN DEFAULT true,
    status VARCHAR(50) DEFAULT 'draft', -- draft, active, completed, cancelled
+   start_date DATE,
+   end_date DATE,
    created_by UUID REFERENCES vendors(id),
    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
    updated_at TIMESTAMP WITH TIME ZONE DEFAULT now()
 );
+
+-- Ensure start_date and end_date exist if the table was created previously without them
+ALTER TABLE programs ADD COLUMN IF NOT EXISTS start_date DATE;
+ALTER TABLE programs ADD COLUMN IF NOT EXISTS end_date DATE;
 
 -- STAGE 2: FARMER PROFILES (extension of vendors)
 CREATE TABLE IF NOT EXISTS farmer_profiles (
