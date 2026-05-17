@@ -35,8 +35,9 @@ CREATE TABLE IF NOT EXISTS trainings (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
--- Ensure category_id exists if the table was created previously without it
+-- Ensure category_id and is_active exist if the table was created previously without them
 ALTER TABLE trainings ADD COLUMN IF NOT EXISTS category_id UUID REFERENCES training_categories(id) ON DELETE SET NULL;
+ALTER TABLE trainings ADD COLUMN IF NOT EXISTS is_active BOOLEAN DEFAULT true;
 
 -- Live Sessions
 CREATE TABLE IF NOT EXISTS live_sessions (
