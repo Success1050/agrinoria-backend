@@ -13,7 +13,11 @@ async function migrate() {
         'aggregator-schema.sql',
         'stages-12-15-schema.sql',
         'migrate-finance-system.sql',
-        'scratch/migration_input_v2.sql'
+        'scratch/migration_input_v2.sql',
+        'db-creation-ads.sql',
+        'db-creation-email-verification.sql',
+        'db-creation-training.sql',
+        'scratch/migrate_input_workflow.sql'
     ];
 
     try {
